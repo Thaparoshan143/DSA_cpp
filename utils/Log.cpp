@@ -1,0 +1,30 @@
+#include<Types.hpp>
+
+#define LOG_PREFIX "# "
+#define ERROR_PREFIX "=> "
+
+#define END_LINE_CMD std::endl // cpp style (buffer flushed)
+// #define END_LINE_CMD "\n" // c style
+
+namespace Utils
+{
+    template<typename T = uint>
+    void Log(const String& title, const T& val, const String& sep = ": ")
+    {
+        std::cout << LOG_PREFIX << title << sep << val << END_LINE_CMD;
+    }
+
+    void Error(const String& msg)
+    {
+        std::cout << ERROR_PREFIX << msg << END_LINE_CMD;
+    }
+
+    void Seperator(const String& sepSymb = "-", const uint count = 60)
+    {
+        for(uint i=0;i<count;++i)
+        {
+            std::cout << sepSymb;
+        }
+        std::cout << END_LINE_CMD;
+    }
+}

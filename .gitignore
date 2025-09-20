@@ -1,0 +1,10 @@
+
+# ignore all output files
+*.o
+*.out
+
+# ignore vscode extensions
+.vscode
+
+# ignore mac system generated file 
+.DS_Store

@@ -8,3 +8,7 @@
 
 # ignore mac system generated file 
 .DS_Store
+
+# local testing folder temp
+temp
+ignore

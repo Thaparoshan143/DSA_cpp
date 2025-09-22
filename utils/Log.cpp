@@ -27,4 +27,15 @@ namespace Utils
         }
         std::cout << END_LINE_CMD;
     }
+
+    template<typename T>
+    void VecLog(const String& title, Vec<T>& vec, const String vecSep = ", ")
+    {
+        std::cout << title << ": ";
+        for(const T& item : vec)
+        {
+            std::cout << item << vecSep;
+        }
+        std::cout << END_LINE_CMD;
+    }
 }

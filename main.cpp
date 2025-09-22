@@ -1,17 +1,21 @@
 // This file will include only the bare bone to test 
 
 #include<utils/Log.cpp>
-
+#include<utils/Generators.cpp>
+#include<sorting/bubble.cpp>
 
 using namespace Utils;
 
 int main()
 {
-    Log("Testing", 123);
+    // Vec<uint> temp { GetNaturalNumUpto(5, DESCENDING) };
+    Vec<int> temp { GetRandomNum<int>(5, -10, 10) };
 
-    Seperator();
+    VecLog("Previous Numbers", temp);
+    
+    bubble_sort(temp, ASCENDING);
 
-    Error("Well");
+    VecLog("After Sort Numbers", temp);
 
     return 0;
 }

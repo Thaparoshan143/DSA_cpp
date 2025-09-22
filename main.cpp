@@ -8,8 +8,8 @@ using namespace Utils;
 
 int main()
 {
-    // Vec<uint> temp { GetNaturalNumUpto(5, DESCENDING) };
-    Vec<int> temp { GetRandomNum<int>(5, -10, 10) };
+    Vec<uint> temp { GetNaturalNumUpto(5, DESCENDING) };
+    // Vec<int> temp { GetRandomNum<int>(5, -10, 10) };
 
     VecLog("Previous Numbers", temp);
     

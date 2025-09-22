@@ -5,6 +5,9 @@
 #include<vector>
 
 
+#define ASCENDING 1
+#define DESCENDING 0
+
 using String = std::string;
 template<class T>
 using Vec = std::vector<T>;

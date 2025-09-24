@@ -1,3 +1,5 @@
+#ifdef LOG_ENABLE_DEF
+
 #include<Types.hpp>
 
 #define LOG_PREFIX "# "
@@ -29,7 +31,7 @@ namespace Utils
     }
 
     template<typename T>
-    void VecLog(const String& title, Vec<T>& vec, const String vecSep = ", ")
+    void VecLog(const String& title, Vec<T>& vec, const String& vecSep = ", ")
     {
         std::cout << title << ": ";
         for(const T& item : vec)
@@ -39,3 +41,5 @@ namespace Utils
         std::cout << END_LINE_CMD;
     }
 }
+
+#endif

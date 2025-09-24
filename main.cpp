@@ -1,9 +1,11 @@
 // This file will include only the bare bone to test 
 
+#define LOG_ENABLE_DEF
 #include<utils/Log.cpp>
 #include<utils/Generators.cpp>
 // #include<sorting/bubble.cpp>
-#include<sorting/selection.cpp>
+// #include<sorting/selection.cpp>
+#include<sorting/insertion.cpp>
 
 using namespace Utils;
 
@@ -14,7 +16,7 @@ int main()
 
     VecLog("Previous Numbers", temp);
     
-    selection_sort(temp, ASCENDING);
+    insertion_sort(temp, DESCENDING);
 
     VecLog("After Sort Numbers", temp);
 

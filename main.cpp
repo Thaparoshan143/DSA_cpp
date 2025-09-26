@@ -6,18 +6,19 @@
 // #include<sorting/bubble.cpp>
 // #include<sorting/selection.cpp>
 // #include<sorting/insertion.cpp>
-#include<sorting/quick.cpp>
+// #include<sorting/quick.cpp>
+#include<sorting/counting.cpp>
 
 using namespace Utils;
 
 int main()
 {
     // Vec<uint> temp { GetNaturalNumUpto(5, DESCENDING) };
-    Vec<int> temp { GetRandomNum<int>(10, -20, 20) };
+    Vec<int> temp { GetRandomNum<int>(20, 10, 20) };
 
     VecLog("Previous Numbers", temp);
-
-    quick_sort(temp, 0, temp.size() - 1, DESCENDING);
+    
+    counting_sort(temp, ASCENDING);
 
     VecLog("After Sort Numbers", temp);
 

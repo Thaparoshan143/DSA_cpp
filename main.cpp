@@ -15,7 +15,7 @@ using namespace Utils;
 int main()
 {
     // Vec<uint> temp { GetNaturalNumUpto(5, DESCENDING) };
-    Vec<int> temp { GetRandomNum<int>(20, 10, 100) };
+    Vec<int> temp { GetRandomNum<int>(20, -10, 100) };
 
     VecLog("Previous Numbers", temp);
     

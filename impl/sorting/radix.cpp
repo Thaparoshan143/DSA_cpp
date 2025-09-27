@@ -1,6 +1,7 @@
 #include<includes/Types.hpp>
 #include<utils/Utils.cpp>
 
+// #Note: only works with the intergral array non-negative.. for other won't be precise..
 // main idea is using the radix/base of number system to sort.
 // Complexity: O(nk)
 

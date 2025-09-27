@@ -7,18 +7,19 @@
 // #include<sorting/selection.cpp>
 // #include<sorting/insertion.cpp>
 // #include<sorting/quick.cpp>
-#include<sorting/counting.cpp>
+// #include<sorting/counting.cpp>
+#include<sorting/radix.cpp>
 
 using namespace Utils;
 
 int main()
 {
     // Vec<uint> temp { GetNaturalNumUpto(5, DESCENDING) };
-    Vec<int> temp { GetRandomNum<int>(20, 10, 20) };
+    Vec<int> temp { GetRandomNum<int>(20, 10, 100) };
 
     VecLog("Previous Numbers", temp);
     
-    counting_sort(temp, ASCENDING);
+    radix_sort(temp, DESCENDING);
 
     VecLog("After Sort Numbers", temp);
 

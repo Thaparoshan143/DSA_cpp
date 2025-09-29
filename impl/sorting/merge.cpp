@@ -3,6 +3,9 @@
 
 // basic idea is to divide and conquer
 // we sub divide the array, (keep on subdividing) until its one/two, then sort it (for two), then recombine smaller sorted into one combined (also, in sorted form)
+// Complexity: O(n.logn)
+// Important Note: Actual implementation of merge sort seems to be little different than done here.
+// Below implementation, use little different logic in end, but the idea remains same, to divide and sort in small subset, with in order join in merge
 
 template<typename T>
 void merge_sort(Vec<T>& vec, const bool order = ASCENDING)

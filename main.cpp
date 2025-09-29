@@ -8,18 +8,19 @@
 // #include<sorting/insertion.cpp>
 // #include<sorting/quick.cpp>
 // #include<sorting/counting.cpp>
-#include<sorting/radix.cpp>
+// #include<sorting/radix.cpp>
+#include<sorting/merge.cpp>
 
 using namespace Utils;
 
 int main()
 {
     // Vec<uint> temp { GetNaturalNumUpto(5, DESCENDING) };
-    Vec<int> temp { GetRandomNum<int>(20, -10, 100) };
+    Vec<int> temp { GetRandomNum<int>(10, -100, 100) };
 
     VecLog("Previous Numbers", temp);
     
-    radix_sort(temp, DESCENDING);
+    merge_sort(temp, ASCENDING);
 
     VecLog("After Sort Numbers", temp);
 

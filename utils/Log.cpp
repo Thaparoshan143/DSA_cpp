@@ -33,7 +33,7 @@ namespace Utils
     template<typename T>
     void VecLog(const String& title, Vec<T>& vec, const String& vecSep = ", ")
     {
-        std::cout << title << ": ";
+        std::cout << title << "(size: " << vec.size() << "): ";
         for(const T& item : vec)
         {
             std::cout << item << vecSep;

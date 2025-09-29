@@ -14,3 +14,8 @@ using Vec = std::vector<T>;
 
 using uint = unsigned int;
 using uchar = unsigned char;
+
+
+// callbacks defined
+template<typename T>
+using CompareCallback = bool (*)(T&, T&);

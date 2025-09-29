@@ -3,26 +3,24 @@
 #define LOG_ENABLE_DEF
 #include<utils/Log.cpp>
 #include<utils/Generators.cpp>
-// #include<sorting/bubble.cpp>
-// #include<sorting/selection.cpp>
-// #include<sorting/insertion.cpp>
-// #include<sorting/quick.cpp>
-// #include<sorting/counting.cpp>
-// #include<sorting/radix.cpp>
-#include<sorting/merge.cpp>
+#include<searching/linear.cpp>
 
 using namespace Utils;
 
 int main()
 {
-    // Vec<uint> temp { GetNaturalNumUpto(5, DESCENDING) };
-    Vec<int> temp { GetRandomNum<int>(10, -100, 100) };
+    Vec<uint> temp { GetNaturalNumUpto(15, ASCENDING) };
+    // Vec<int> temp { GetRandomNum<int>(10, -100, 100) };
+    uint ele { 13 };
 
-    VecLog("Previous Numbers", temp);
+    VecLog("Vector Numbers", temp);
     
-    merge_sort(temp, ASCENDING);
+    int eleIndex { linear_search(temp, ele, DESCENDING) };
 
-    VecLog("After Sort Numbers", temp);
+    if (eleIndex != -1)
+        Log("Element Index", eleIndex);
+    else
+        std::cout << "Element: " << ele << ", not found in array!!" << std::endl;
 
     return 0;
 }

@@ -31,4 +31,18 @@ namespace Utils
 
         return temp;
     }
+
+    template<typename T>
+    inline Vec<T> GetVecWithDupVal(const T& val, const uint count)
+    {
+        Vec<T> temp {};
+        temp.reserve(count);
+
+        for (int i=0;i<count;++i)
+        {
+            temp.push_back(val);
+        }
+
+        return temp;
+    }
 }

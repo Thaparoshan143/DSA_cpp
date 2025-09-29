@@ -84,4 +84,48 @@ namespace Utils
     {
         return Vec<T>(vec.begin() + start, vec.begin() + end);
     }
+
+    // will return ASCENDING (1) or DESCENDING (0) if are in sorted order, else -1 if unsorted
+    template<typename T>
+    inline int IsVecSorted(const Vec<T>& vec)
+    {
+        auto vecSize { vec.size() };
+        int activeInd { 0 };
+
+        // if few elements are same, skip them..
+        while (activeInd < vecSize)
+        {
+            if (vec[activeInd] != vec[activeInd + 1])
+                break;
+
+            activeInd++;
+        }
+
+        if (++activeInd == vecSize)
+            return ASCENDING; // case when all the vector value are same.. random choice of ASCENDING
+
+        // ascending test...
+        if (vec[activeInd] < vec[activeInd + 1])
+        {
+            while (++activeInd < vecSize)
+            {
+                if (vec[activeInd - 1] > vec[activeInd])
+                    return -1;
+            }
+            return ASCENDING;
+        }
+        else
+        {
+            while (++activeInd < vecSize)
+            {
+                if (vec[activeInd - 1] < vec[activeInd])
+                    return -1;
+            }
+
+            return DESCENDING;
+        }
+
+        // vec is unsorted..
+        return -1;
+    }
 }

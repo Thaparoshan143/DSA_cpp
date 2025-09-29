@@ -3,25 +3,17 @@
 #define LOG_ENABLE_DEF
 #include<utils/Log.cpp>
 #include<utils/Generators.cpp>
-// #include<searching/linear.cpp>
-#include<searching/binary.cpp>
+#include<utils/Utils.cpp>
 
 using namespace Utils;
 
 int main()
 {
-    Vec<uint> temp { GetNaturalNumUpto(110, DESCENDING) };
-    // Vec<int> temp { GetRandomNum<int>(10, -100, 100) };
-    uint ele { 25 };
+    Vec<uint> temp { Utils::GetVecWithDupVal<uint>(2, 4) };
 
     VecLog("Vector Numbers", temp);
-    
-    int eleIndex { binary_search(temp, ele, DESCENDING) };
 
-    if (eleIndex != -1)
-        Log("Element Index", eleIndex);
-    else
-        std::cout << "Element: " << ele << ", not found in array!!" << std::endl;
+    std::cout << "Is sorted (DESC: 0/ASC: 1/UNSORT: -1): " << Utils::IsVecSorted(temp) << std::endl;
 
     return 0;
 }

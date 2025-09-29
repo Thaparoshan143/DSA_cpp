@@ -3,19 +3,20 @@
 #define LOG_ENABLE_DEF
 #include<utils/Log.cpp>
 #include<utils/Generators.cpp>
-#include<searching/linear.cpp>
+// #include<searching/linear.cpp>
+#include<searching/binary.cpp>
 
 using namespace Utils;
 
 int main()
 {
-    Vec<uint> temp { GetNaturalNumUpto(15, ASCENDING) };
+    Vec<uint> temp { GetNaturalNumUpto(110, DESCENDING) };
     // Vec<int> temp { GetRandomNum<int>(10, -100, 100) };
-    uint ele { 13 };
+    uint ele { 25 };
 
     VecLog("Vector Numbers", temp);
     
-    int eleIndex { linear_search(temp, ele, DESCENDING) };
+    int eleIndex { binary_search(temp, ele, DESCENDING) };
 
     if (eleIndex != -1)
         Log("Element Index", eleIndex);

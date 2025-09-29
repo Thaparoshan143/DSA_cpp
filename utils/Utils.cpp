@@ -10,6 +10,13 @@ namespace Utils
         b = temp;
     }
 
+    template<typename T>
+    inline bool CondSwap(T& a, T& b, const CompareCallback<T>& compare)
+    {
+        if (compare(a, b))
+            Swap(a, b);
+    }
+
     // use only in case of unsorted..
     template<typename T>
     T GetVecMin(const Vec<T>& vec)
@@ -69,5 +76,12 @@ namespace Utils
         }
 
         return maxInd;
+    }
+
+    // take the original vector and return new vector (sub vector) from given index to end
+    template<typename T>
+    inline Vec<T> GetSubVec(const Vec<T>& vec, const int start, const int end)
+    {
+        return Vec<T>(vec.begin() + start, vec.begin() + end);
     }
 }

@@ -4,37 +4,58 @@
 #include<utils/Log.cpp>
 #include<utils/Generators.cpp>
 #include<utils/Utils.cpp>
-#include<linked_list/linear.cpp>
+#include<stack_queue/stack.cpp>
 
 using namespace Utils;
 
 int main()
 {
-    // Vec<uint> temp { Utils::GetNaturalNumUpto(2) };
-    Vec<uint> temp { Utils::GetRandomNum<uint>(5, 0, 100) };
-    auto root { get_vec_LNodes(temp) };
-    auto node1 { get_new_LNode<uint>(10) };
-    auto node2 { get_new_LNode<uint>(100) };
+    Stack<int> temp {};
 
-    *root + *node2;
-    insert_LNode_at(root, node1, 0);
+    for (int i=0;i<5;++i)
+    {
+        temp.Push(i+1);
+    }
 
-    traverse_print(root);
-    Utils::Seperator();
-    auto maxNode { get_max_data_LNode(root) };
-    auto minNode { get_min_data_LNode(root) };
-    std::cout << "&&& MAX Node: " << *maxNode <<  " ... || ... Index: " << get_LNode_index(root, maxNode) <<  std::endl;
-    std::cout << "&&& MIN Node: " << *minNode <<  " ... || ... Index: " << get_LNode_index(root, minNode) << std::endl;
-    Utils::Seperator();
-    std::cout << "Opeartion Success (0, NO || 1, YES): " << rearrange_LNode(root, 0, 3) << std::endl;
-    traverse_print(root);
+    temp.PrintInfo();
+
+    Seperator();
+    for (int i=0;i<2;++i)
+    {
+        std::cout << "Popped: " << temp.Pop() << std::endl;
+    }
     
-    sort_LNodes(root);
+    Seperator();
+    Log("Stack Peek: ", temp.Peek());
+    Log("Stack Peek (check again): ", temp.Peek());
+    Log("Is Stack Empty: (1/YES || 0/NO)", temp.IsEmpty());
+    
+    Seperator("*");
+    temp.PrintInfo();
+    Seperator("*");
 
-    Utils::Seperator();
-    traverse_print(root);
-    cleanup_LNodes(root);
-    Utils::Seperator();
+    // overflowing the Pop than available as test case (can it handle?)
+    temp.Pop();
+    temp.Pop();
+    temp.Pop();
+
+    Log("Overflow (outbound) Pop check: ", temp.Pop());
+    Log("Overflow (outbound) Peek check: ", temp.Peek());
+    Log("Stack After Empty, check Cap: ", temp.Capacity());
+    Log("Stack After Empty, check Element count: ", temp.Size());
+    Log("Stack After Empty, check IsEmpty: ", temp.IsEmpty());
+    
+    // Empty Stack info
+    Seperator("#");
+    temp.PrintInfo();
+    Seperator("#");
+    // Reusing Stack for check
+    for (int i=0;i<3;++i)
+    {
+        temp.Push(i+1);
+    }
+    
+    temp.PrintInfo();
 
     return 0;
 }

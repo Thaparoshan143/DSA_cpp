@@ -4,59 +4,88 @@
 #include<utils/Log.cpp>
 #include<utils/Generators.cpp>
 #include<utils/Utils.cpp>
-#include<stack_queue/queue.cpp>
+#include<hash/table.cpp>
 
 using namespace Utils;
 
+template<typename T>
+struct Transform
+{
+    struct Point3D {    T x {}, y {}, z {}; };
+
+    Point3D position {}, rotation {}, scale {};
+};
+
+// temporary object to store in hash table.. hash is done by its id, .. (can also be from name)
+struct Object
+{
+    uint id {};
+    String name { "Default" };
+    Transform<float> transform {};
+
+    // simple hash overload with id based..
+    // int operator%(uint rhs) const
+    // {
+    //     return this->id % rhs;
+    // }
+
+    // another hash overload fn (taking name and adding all the char ASCII value then finally modulo)
+    int operator%(uint rhs) const
+    {
+        // logic to create the object hash from its identity
+        uint64_t totalChar {};
+        for (const auto& item : name)
+        {
+            totalChar += static_cast<uint64_t>(item);
+        }
+        return totalChar % rhs;
+    }
+};
+
+void print_obj(const Object& o)
+{
+    Utils::Seperator();
+    std::cout << "# Object Info:" << std::endl;
+    std::cout << "Id: " << o.id << "\nName: " << o.name << std::endl;
+    std::cout << "Position: " << o.transform.position.x << ", " << o.transform.position.y << ", " << o.transform.position.z << "\n";
+    std::cout << "Rotation: " << o.transform.rotation.x << ", " << o.transform.rotation.y << ", " << o.transform.rotation.z << "\n";
+    std::cout << "Scale: " << o.transform.scale.x << ", " << o.transform.scale.y << ", " << o.transform.scale.z << "\n";
+    Utils::Seperator();
+}
+
 int main()
 {
-    CQueue<int> temp(4);
+    HashTableProps<Object> htp {};
+    htp.tableSize = TWO_POW(5);
+    htp.hashFn = hash_func_mod;
+    HashTable<Object> ht(htp);
 
-    for (int i=0;i<7;++i)
-    {
-        temp.Enqueue(i+1);
-    }
+    Object obj1 {}, obj2 {};
+    obj2.id = 150;
+    obj2.name = "Second";
+    obj2.transform.scale.z = 5;
+    print_obj(obj1);
+    print_obj(obj2);
 
-    temp.PrintInfo();
+    auto obj1Hash = ht.Place(obj1);
+    auto obj2Hash = ht.Place(obj2);
 
-    Seperator();
-    for (int i=0;i<2;++i)
-    {
-        std::cout << "Dequeue: " << temp.Dequeue() << std::endl;
-    }
+    std::cout << "Object 1 Hash: " << obj1Hash << std::endl;
+    std::cout << "Object 2 Hash: " << obj2Hash << std::endl;
+
+    auto objret = ht.Retrieve(obj1Hash);
+    if (objret)
+        print_obj(*objret);
+
+    objret = ht.Retrieve(obj2Hash);
+    if (objret)
+        print_obj(*objret);
+
+    ht.Remove(obj1Hash);
+
+    objret = ht.Retrieve(obj1Hash);
+    if (objret)
+        print_obj(*objret);
     
-    Seperator();
-    Log("Queue Peek: ", temp.Peek());
-    Log("Queue Peek (check again): ", temp.Peek());
-    Log("Is Queue Empty: (1/YES || 0/NO)", temp.IsEmpty());
-    
-    Seperator("*");
-    temp.PrintInfo();
-    Seperator("*");
-
-    // overflowing the Dequeue than available as test case (can it handle?)
-    temp.Dequeue();
-    temp.Dequeue();
-    temp.Dequeue();
-
-    Log("Overflow (outbound) Pop check: ", temp.Dequeue());
-    Log("Overflow (outbound) Peek check: ", temp.Peek());
-    Log("Queue After Empty, check Cap: ", temp.Capacity());
-    Log("Queue After Empty, check Element count: ", temp.Size());
-    Log("Queue After Empty, check IsEmpty: ", temp.IsEmpty());
-    
-    // Empty Queue info
-    Seperator("#");
-    temp.PrintInfo();
-    Seperator("#");
-
-    // Reusing Queue for check? LQueue is generally one time use only and CQueue is reusable..
-    for (int i=0;i<3;++i)
-    {
-        temp.Enqueue(i+10);
-    }
-    
-    temp.PrintInfo();
-
     return 0;
 }

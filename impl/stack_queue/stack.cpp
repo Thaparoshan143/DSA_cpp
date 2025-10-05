@@ -14,6 +14,11 @@ class Stack
     public:
     Stack() {   }
     Stack(const uint cap): m_capacity(cap) {    } // early allocation is not done, can be configed via alloc function at initialization if required.. (eg: alloc(this, cap) or checkState())
+    ~Stack()
+    {
+        if (m_data)
+            delete m_data;
+    }
 
     void Push(const T& d)
     {

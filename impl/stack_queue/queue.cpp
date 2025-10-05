@@ -16,6 +16,7 @@ class LQueue
     // default constructor is deleted so that capacity must be known before hand (fixed size so..)
     LQueue() = delete;
     LQueue(const uint cap): m_capacity(cap) {   alloc(this, cap);   }
+    ~LQueue() {  delete m_data;  }
 
     void Enqueue(const T& d)
     {
@@ -92,6 +93,7 @@ class CQueue
     // default constructor is deleted so that capacity must be known before hand (fixed size so..)
     CQueue() = delete;
     CQueue(const uint cap): m_capacity(cap) {   alloc(this, cap);   }
+    ~CQueue() { delete m_data;  }
 
     void Enqueue(const T& d)
     {

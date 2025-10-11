@@ -59,7 +59,7 @@ namespace Utils
 
     void LogMsg(const String& msg, const LogLevel& ll)
     {
-        std::cout << END_LINE_CMD << s_log_prefix[ll] << msg << END_LINE_CMD << std::endl;
+        std::cout << END_LINE_CMD << s_log_prefix[ll] << msg << END_LINE_CMD;
     }
 }
 

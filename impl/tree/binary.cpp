@@ -24,6 +24,14 @@ BNodePtr<T> GetNewBNode(const T& val)
     return temp;
 }
 
+template<typename T>
+void FreeBNode(BNodePtr<T>& node)
+{
+    // write any other freeing logic if there is.. here.. (maybe allocator..informing..)
+    delete node;
+    node = nullptr;
+}
+
 /* 
 There are three traversal methods:
 1. Pre-order

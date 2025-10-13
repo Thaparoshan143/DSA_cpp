@@ -36,6 +36,21 @@ class BSTree
         return recursiveAdd(m_root, node);
     }
 
+    // for deleting, can use by node or by value (for now only by node..)
+    bool DeleteBNode(BNodePtr<T> node)
+    {
+        if (m_root == nullptr)
+            return false;
+        else if (m_root == node || m_root->value == node->value)
+        {
+            recDelHelper(&m_root);
+            return true;
+        }
+
+        // helper function
+        return recursiveDelete(m_root, node);
+    }
+
     const BNodePtr<T> GetRoot() const { return m_root;  }
     const BSTreeConfig& GetConfig() const { return m_config;    }
 
@@ -61,5 +76,77 @@ class BSTree
         }
         // currently for equal case i.e root.value = node.value is not implemented.. either use else or >= in if..
         return false;
+    }
+
+    static bool recursiveDelete(BNodePtr<T> root, BNodePtr<T> node)
+    {
+        if (root->left == nullptr && root->right == nullptr)
+            return false;
+
+        if (root->left && root->left->value == node->value)
+        {
+            return recDelHelper(&(root->left));
+        }
+        else if (root->right && root->right->value == node->value)
+        {
+            return recDelHelper(&(root->right));
+        }
+        else 
+        {
+            return false;
+        }
+
+        bool left = recursiveDelete(root->left, node);
+        bool right = recursiveDelete(root->right, node);
+
+        return (left || right);
+    }
+
+    // The node connection is the connection from parent to the node itself, i.e. either parent.left or parent.right of node
+    static bool recDelHelper(BNodePtr<T>* nodeConn)
+    {
+        BNodePtr<T> node { *nodeConn };
+        // if it is leaf node simply delete it..
+        if (node->left == nullptr && node->right == nullptr)
+        {
+            FreeBNode(node);
+            *nodeConn = nullptr;
+            return true;
+        }
+        else if (node->left == nullptr)
+        {
+            BNodePtr<T> rightNode { node->right };
+            FreeBNode(node);
+            *nodeConn = rightNode;
+            return true;
+        }
+        else
+        {
+            // here also, left node will be promoted (if exist) and right hanging branch will be joined later..
+            BNodePtr<T> leftNode { node->left };
+            BNodePtr<T> rightNode { node->right };
+            FreeBNode(node);
+            *nodeConn = leftNode;
+            // now attach the right hanging branch..
+            BNodePtr<T> rightMostNode { getRightmostBNode(leftNode) };
+            rightMostNode->right = rightNode;
+            return true;
+        }
+    }
+
+    static BNodePtr<T> getLeftmostBNode(BNodePtr<T> root)
+    {
+        if (root->left == nullptr)
+            return root;
+        
+        return getLeftmostBNode(root->left);
+    }
+
+    static BNodePtr<T> getRightmostBNode(BNodePtr<T> root)
+    {
+        if (root->right == nullptr)
+            return root;
+        
+        return getRightmostBNode(root->right);
     }
 };

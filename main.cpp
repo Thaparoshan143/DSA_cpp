@@ -9,7 +9,7 @@
 using namespace Utils;
 
 // this is just temporary class implementation to illustrate the working with BST
-// at minimum the BST usage based class must have <> & << operator overloaded (i.e less, greater and printing..)
+// at minimum the BST usage based class must have <> == & << operator overloaded (i.e less, greater and printing..)
 class ComplexNum
 {
     public:
@@ -35,6 +35,11 @@ class ComplexNum
         return os;
     }
 
+    bool operator==(const ComplexNum& rhs)
+    {
+        return (this->m_real == rhs.m_real && this->m_img == rhs.m_img);
+    }
+
     double GetMagnitude() const {   return getMag(*this);   }
 
     private:
@@ -55,8 +60,10 @@ int main()
     Vec<ComplexNum> cmpNums = {
         ComplexNum(1, 1),
         ComplexNum(1, 0),
-        ComplexNum(1, 2),
-        ComplexNum(2, 2)
+        ComplexNum(0, 3),
+        // ComplexNum(1, 2),
+        // ComplexNum(2, 2),
+        ComplexNum(2, 5),
     };
 
     BNodePtr<ComplexNum> node {};
@@ -67,19 +74,24 @@ int main()
         bsTree.AddBNode(node);
     }
     
+
     Utils::Seperator();
-    LogMsg("Pre-order traversal", LogLevel::MESSAGE);
-    pre_order_traversal(bsTree.GetRoot());
-    std::cout << std::endl;
-    
-    Utils::Seperator();
-    LogMsg("In-order traversal", LogLevel::MESSAGE);
+    LogMsg("In-order traversal (before delete)", LogLevel::MESSAGE);
     in_order_traversal(bsTree.GetRoot());
     std::cout << std::endl;
-    
     Utils::Seperator();
-    LogMsg("Post-order traversal", LogLevel::MESSAGE);
-    post_order_traversal(bsTree.GetRoot());
+
+    // trying to delete node (exisiting, root,) and also other non-existing to see its behaviour..
+    // warning: this is temporary usages.. the new allocated block are not freed here..
+    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(0, 3)));
+    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 2)));
+    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 1)));
+    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 0)));
+    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(2, 2)));
+    // bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(2, 5)));
+
+    LogMsg("In-order traversal (after delete)", LogLevel::MESSAGE);
+    in_order_traversal(bsTree.GetRoot());
     std::cout << std::endl;
     Utils::Seperator();
 

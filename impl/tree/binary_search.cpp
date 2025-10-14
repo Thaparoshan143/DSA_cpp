@@ -78,28 +78,21 @@ class BSTree
         return false;
     }
 
-    static bool recursiveDelete(BNodePtr<T> root, BNodePtr<T> node)
+   static bool recursiveDelete(BNodePtr<T> root, BNodePtr<T> node)
     {
-        if (root->left == nullptr && root->right == nullptr)
+        if (!root || (!root->left && !root->right))
             return false;
 
         if (root->left && root->left->value == node->value)
-        {
             return recDelHelper(&(root->left));
-        }
         else if (root->right && root->right->value == node->value)
-        {
             return recDelHelper(&(root->right));
-        }
-        else 
-        {
-            return false;
-        }
 
-        bool left = recursiveDelete(root->left, node);
-        bool right = recursiveDelete(root->right, node);
-
-        return (left || right);
+        // if node value is greater than node value, visit only right branch
+        if (root->value < node->value)
+            return recursiveDelete(root->right, node);
+        else
+            return recursiveDelete(root->left, node);
     }
 
     // The node connection is the connection from parent to the node itself, i.e. either parent.left or parent.right of node

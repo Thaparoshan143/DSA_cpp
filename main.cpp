@@ -81,11 +81,17 @@ int main()
     std::cout << std::endl;
     Utils::Seperator();
 
+    auto searchNode = bsTree.SearchBNodeBy(ComplexNum(0, 3));
+    if (searchNode)
+        std::cout << "Found the node with value: " << searchNode->value << " || at add: " << searchNode << " || node left add: " << searchNode->left << " || node right add: " << searchNode->right << std::endl;
+    else
+        Utils::LogMsg("Unable to find for given search value in tree", LogLevel::ERROR);
+
     // trying to delete node (exisiting, root,) and also other non-existing to see its behaviour..
     // warning: this is temporary usages.. the new allocated block are not freed here..
     bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(0, 3)));
     bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 2)));
-    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 1)));
+    // bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 1)));
     bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 0)));
     bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(2, 2)));
     // bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(2, 5)));

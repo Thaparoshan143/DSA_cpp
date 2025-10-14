@@ -36,6 +36,13 @@ class BSTree
         return recursiveAdd(m_root, node);
     }
 
+    // search if the BNode exist by value in the node, upon success (i.e if found) returns BNode else nullptr
+    // warning: read and write access is given, i.e can modifiy node props..
+    BNodePtr<T> SearchBNodeBy(const T& val)
+    {
+        return recursiveSearch(m_root, val);
+    }
+
     // for deleting, can use by node or by value (for now only by node..)
     bool DeleteBNode(BNodePtr<T> node)
     {
@@ -78,7 +85,7 @@ class BSTree
         return false;
     }
 
-   static bool recursiveDelete(BNodePtr<T> root, BNodePtr<T> node)
+    static bool recursiveDelete(BNodePtr<T> root, BNodePtr<T> node)
     {
         if (!root || (!root->left && !root->right))
             return false;
@@ -141,5 +148,19 @@ class BSTree
             return root;
         
         return getRightmostBNode(root->right);
+    }
+
+    static BNodePtr<T> recursiveSearch(BNodePtr<T> root, const T& val)
+    {
+        if (root == nullptr)
+            return nullptr;
+        else if (root->value == val)
+            return root;
+
+        // compare value to choose left or right branch..
+        if (root->value < val)
+            return recursiveSearch(root->right, val);
+        else
+            return recursiveSearch(root->left, val);
     }
 };

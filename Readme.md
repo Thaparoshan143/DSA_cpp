@@ -41,10 +41,11 @@
 <hr />
 
 ### Hash **
-- **Tabular:** Simple, without collision remedy, (currently in override mode, i.e. old value is replaced with new value, if hash collide)
+- **Tabular:** Simple, without collision remedy, (currently in override mode, i.e. old value is replaced with new value, if hash collide) (not good impl..)
+- **OpenHash:** Simple open hash implementation using linear chaining mechanism, nodes with keyvalue and next in table entry (curr. vector).
 
 > [!Important]
-> Hash (or Hashing) is not completed as per expectation (collision remedies, multiple hash, other hashing functions..., etc), still looking for few stuffs.. will be updated later..
+> Hash (or Hashing) is not completed as per expectation (collision remedies, multiple hash, other hashing functions..., etc), still looking for few other additional stuffs.. will be updated later..
 
 <hr />
 

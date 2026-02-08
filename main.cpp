@@ -4,102 +4,92 @@
 #include<utils/Log.cpp>
 #include<utils/Generators.cpp>
 #include<utils/Utils.cpp>
-#include<tree/binary_search.cpp>
+#include<hash/openhash.cpp>
 
 using namespace Utils;
 
-// this is just temporary class implementation to illustrate the working with BST
-// at minimum the BST usage based class must have <> == & << operator overloaded (i.e less, greater and printing..)
-class ComplexNum
+// temporary object..
+struct ImageCont
 {
-    public:
-    ComplexNum() = default;
-    ComplexNum(double r, double i): m_real(r), m_img(i) {   }
+    // only temporary usages
+    ImageCont(const uint w=1): width(w) {   }
 
-    bool operator<(const ComplexNum& rhs)
-    {
-        // for now comparing the magnitude only..
-        return this->GetMagnitude() < rhs.GetMagnitude();
-    }
-
-    bool operator>(const ComplexNum& rhs)
-    {
-        // for now comparing the magnitude only..
-        return this->GetMagnitude() > rhs.GetMagnitude();
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const ComplexNum& cn)
-    {
-        // os << "Real part: " << cn.m_real << " || Imaginary Part: " << cn.m_img;
-        os << cn.m_real << "+" << cn.m_img << "j(" << cn.GetMagnitude() << ")";
-        return os;
-    }
-
-    bool operator==(const ComplexNum& rhs)
-    {
-        return (this->m_real == rhs.m_real && this->m_img == rhs.m_img);
-    }
-
-    double GetMagnitude() const {   return getMag(*this);   }
-
-    private:
-    double m_real {}, m_img {};
-
-    static double getMag(const ComplexNum& num)
-    {
-        return sqrt(pow(num.m_real, 2) + pow(num.m_img, 2));
-    }
+    // some meta information
+    uint width {};
+    uint height {};
+    uint channels { 3 };
+    uint size {};
+    // maybe some buffers..
+    uchar* buffer { nullptr };
 };
 
 int main()
 {
-    BSTreeConfig bstConfig {};
-    bstConfig.name = "First BSTree";
+    using KeyType = String;
+    using ValueType = ImageCont;
 
-    BSTree<ComplexNum> bsTree(bstConfig);
-    Vec<ComplexNum> cmpNums = {
-        ComplexNum(1, 1),
-        ComplexNum(1, 0),
-        ComplexNum(0, 3),
-        // ComplexNum(1, 2),
-        // ComplexNum(2, 2),
-        ComplexNum(2, 5),
-    };
+    OpenHashTableProps<KeyType, HashDType> ohtp {};
+    ohtp.tableSize = 1 << 5; // 32
+    ohtp.hashFn = hash_func_ascii_mod;
 
-    BNodePtr<ComplexNum> node {};
-    // currently not checking for error or such.. i.e return value of add node (true or false..)
-    for (const auto& item: cmpNums)
+    HashTable<KeyType, ValueType, HashDType> openHashTable(ohtp);
+
+    Pair<KeyType, ValueType> e1 { "./asset/1.png", ImageCont(1) };
+    Pair<KeyType, ValueType> e2 { "./asset/2.pnf", ImageCont(2) }; // trying to make key with same hash (like e1) for given hash function
+    Pair<KeyType, ValueType> e3 { "./asset/3.jpg", ImageCont(3) };
+    Pair<KeyType, ValueType> e4 { "./asset/4.pnd", ImageCont(4) }; // same hash (like e1) for collision
+
+    openHashTable.Place(e1);
+    openHashTable.Place(e2);
+    openHashTable.Place(e3);
+    openHashTable.Place(e4);
+
+    auto kvEntry = openHashTable.Retrieve("./asset/4.pnd");
+    if (kvEntry)
     {
-        node = GetNewBNode<ComplexNum>(item);
-        bsTree.AddBNode(node);
+        Utils::Seperator();
+        Utils::Log("Key", kvEntry->first);
+        Utils::Log("Value (width)", kvEntry->second.width);
+        Utils::Seperator();
     }
-    
-
-    Utils::Seperator();
-    LogMsg("In-order traversal (before delete)", LogLevel::MESSAGE);
-    in_order_traversal(bsTree.GetRoot());
-    std::cout << std::endl;
-    Utils::Seperator();
-
-    auto searchNode = bsTree.SearchBNodeBy(ComplexNum(0, 3));
-    if (searchNode)
-        std::cout << "Found the node with value: " << searchNode->value << " || at add: " << searchNode << " || node left add: " << searchNode->left << " || node right add: " << searchNode->right << std::endl;
     else
-        Utils::LogMsg("Unable to find for given search value in tree", LogLevel::ERROR);
+    {
+        Utils::LogMsg("Unable to find the key entry", LogLevel::INFO);
+    }
 
-    // trying to delete node (exisiting, root,) and also other non-existing to see its behaviour..
-    // warning: this is temporary usages.. the new allocated block are not freed here..
-    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(0, 3)));
-    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 2)));
-    // bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 1)));
-    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(1, 0)));
-    bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(2, 2)));
-    // bsTree.DeleteBNode(GetNewBNode<ComplexNum>(ComplexNum(2, 5)));
+    kvEntry = openHashTable.Retrieve("./asset/1.png");
+    if (kvEntry)
+    {
+        Utils::Seperator();
+        Utils::Log("Key", kvEntry->first);
+        Utils::Log("Value (width)", kvEntry->second.width);
+        Utils::Seperator();
+    }
+    else
+    {
+        Utils::LogMsg("Unable to find the key entry", LogLevel::INFO);
+    }
 
-    LogMsg("In-order traversal (after delete)", LogLevel::MESSAGE);
-    in_order_traversal(bsTree.GetRoot());
-    std::cout << std::endl;
+    kvEntry = openHashTable.Retrieve("./asset/6.png");
+    if (kvEntry)
+    {
+        Utils::Seperator();
+        Utils::Log("Key", kvEntry->first);
+        Utils::Log("Value (width)", kvEntry->second.width);
+        Utils::Seperator();
+    }
+    else
+    {
+        Utils::LogMsg("Unable to find the key entry", LogLevel::INFO);
+    }
+
+    Utils::Log("Total entry by hash (16)", openHashTable.GetEntryCountByHash(16));
+    Utils::Log("Total entry by key (./asset/10.png)", openHashTable.GetEntryCountByKey("./asset/10.png"));
+    
+    openHashTable.ClearEntries();
     Utils::Seperator();
-
+    Utils::Log("After clear entries Total entry by hash (16)", openHashTable.GetEntryCountByHash(16));
+    
+    
     return 0;
 }
